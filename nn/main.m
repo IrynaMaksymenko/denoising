@@ -29,16 +29,16 @@
 % net = train(net,X,y);
 % predicted = sim(net,X)
 
-net = feedforwardnet(1, 'trainrp'); % Resilient Backpropagation
+net = feedforwardnet([3, 100, 200, 2], 'trainrp'); % Resilient Backpropagation
 net1 = configure(net, x, y);
 
 net2 = train(net1, x, y);
 %predicted_train = net(x);
 %error_train = perform(net, predicted_train, y);
 
-[second, columns] = create_feature_vector('train_small', '2.png');
+[second, columns] = create_feature_vector('D:\Ira\ML Project\denoising\data\train_small', '2.png');
 second_cleared = net2(second);
-imwrite(create_image_matrix(second_cleared, columns), 'predicted_small/2.png');
-
+%imwrite(create_image_matrix(second_cleared, columns), 'D:\Ira\ML Project\denoising\data\predicted_small/2.png');
+imshow(create_image_matrix(second_cleared, columns));
 
 

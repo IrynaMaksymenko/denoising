@@ -1,6 +1,6 @@
 function [x, y] = load_train_data()
-train_images_directory = 'train_small';
-train_cleaned_images_directory = 'train_cleaned_small';
+train_images_directory = 'D:\Ira\ML Project\denoising\data\train_tiny';
+train_cleaned_images_directory = 'D:\Ira\ML Project\denoising\data\train_cleaned_tiny';
 x = [];
 y = [];
 input_images = dir(sprintf('%s/*.png', train_images_directory));
