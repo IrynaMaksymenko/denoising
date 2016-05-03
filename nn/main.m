@@ -1,44 +1,24 @@
 
 [x, y] = load_train_data();
 
-% net = network;
-% net.numInputs = 1;
-% net.numLayers = 2;
-% 
-% % hidden layer of size 10 and sigmoid activation function
-% net.layers{1}.size = 10;
-% net.layers{1}.transferFcn = 'logsig';
-% net.layers{1}.initFcn = 'initnw';
-% 
-% % output layer of size 1 and sigmoid activation function
-% net.layers{2}.size = 1;
-% net.layers{2}.transferFcn = 'logsig';
-% net.layers{2}.initFcn = 'initnw';
-% 
-% net.biasConnect = [1; 1];
-% net.inputConnect = [1; 0];
-% net.layerConnect = [0 0; 1 0];
-% net.outputConnect = [0 1];
-% 
-% net.initFcn = 'initlay';
-% net.performFcn = 'mse';
-% net.trainFcn = 'trainrp';
-% view(net);
-% 
-% net = init(net);
-% net = train(net,X,y);
-% predicted = sim(net,X)
+%net = feedforwardnet([3], 'trainrp'); % Resilient Backpropagation
+%net = configure(net, x, y);
 
-net = feedforwardnet([3, 100, 200, 2], 'trainrp'); % Resilient Backpropagation
-net1 = configure(net, x, y);
+%net = train(net, x, y);
 
-net2 = train(net1, x, y);
-%predicted_train = net(x);
-%error_train = perform(net, predicted_train, y);
+autoenc1 = trainAutoencoder(x, 100)
+
+
+
+
 
 [second, columns] = create_feature_vector('D:\Ira\ML Project\denoising\data\train_small', '2.png');
-second_cleared = net2(second);
+second_cleared = net(second);
 %imwrite(create_image_matrix(second_cleared, columns), 'D:\Ira\ML Project\denoising\data\predicted_small/2.png');
 imshow(create_image_matrix(second_cleared, columns));
+
+%http://iopscience.iop.org/article/10.1088/1742-6596/536/1/012020/pdf
+%https://papers.nips.cc/paper/4686-image-denoising-and-inpainting-with-deep-neural-networks.pdf
+%http://www.mathworks.com/help/nnet/examples/training-a-deep-neural-network-for-digit-classification.html
 
 

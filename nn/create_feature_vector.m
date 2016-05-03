@@ -2,17 +2,26 @@
 function [feature_vector, columns] = create_feature_vector(directoy_name, img_name)
 
 % read image
-imdata = imread(sprintf('%s/%s', directoy_name, img_name));
-[rows, columns] = size(imdata);
-
-feature_vector = zeros(1, rows*columns);
-for row = 1 : rows
-    for column = 1 : columns
-        pixel = imdata(row, column);
-        % each pixel is a feature
-        % TODO: better feature selection (use sliding window etc)
-        feature_vector((row-1)*columns + column) = pixel;  
+imdata = double(imread(sprintf('%s/%s', directoy_name, img_name)));
+    [rows, columns] = size(imdata);
+   
+    % collect features for each pixel
+   
+    feature_vector = zeros(rows*columns, 1);
+    index = 1;
+    for r = 1 : rows
+        for c = 1 : columns
+            pixel = imdata(r, c);
+            %neighbours = get_neighbours(imdata, r, c);
+            %vec = [pixel, neighbours];
+            feature_vector(index, 1) = pixel;
+            %feature_vector(index, 3) = range(vec);
+            %feature_vector(index, 4) = var(vec);
+            %feature_vector(index, 5) = std(vec);
+            %feature_vector(index, 6) = mode(vec);
+            %feature_vector(index, 7) = mean(vec);
+            index = index + 1;
+        end
     end
-end
 
 end

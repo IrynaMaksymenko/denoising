@@ -6,5 +6,5 @@ imdata = imread(sprintf('%s/%s', directoy_name, img_name));
 [rows, columns] = size(imdata);
 
 % each element of vector is a pixel itself
-target_vector = double(reshape(imdata', [1, rows*columns]));
+target_vector = double(reshape(imdata', [rows*columns, 1]));
 end
