@@ -10,7 +10,7 @@ for img = input_images'
     block_s1 = 43;
     block_s2 = 45;
     
-    blocks = reshape(imdata, [block_s143, rows/block_s1, block_s2, columns/block_s2]);
+    blocks = reshape(imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
     [s1, s2, s3, s4] = size(blocks);
     
     % for each block apply clustering

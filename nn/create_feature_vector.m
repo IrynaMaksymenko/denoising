@@ -1,8 +1,5 @@
 % function converts single image into vector of features
-function [feature_vector, columns] = create_feature_vector(directoy_name, img_name)
-
-% read image
-imdata = double(imread(sprintf('%s/%s', directoy_name, img_name)));
+function [feature_vector, columns] = create_feature_vector(imdata)
     [rows, columns] = size(imdata);
    
     % collect features for each pixel
