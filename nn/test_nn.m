@@ -9,30 +9,27 @@ image_count = length(input_images(not([input_images.isdir])));
 rows = 258;
 columns = 540;
 
-blocks_in_one_image = (rows/block_s1)*(columns/block_s2);
+blocks_in_one_image = (rows)*(columns);
 data_size = blocks_in_one_image * image_count;
 
 for img = input_images'
     % read image
     imdata = double(imread(sprintf('%s/%s', test_images_directory, img.name)));
     [rows, columns] = size(imdata);
-    
-    % split image into blocks
-    blocks = reshape(imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
-    [s1, s2, s3, s4] = size(blocks);
-    
-    for row = 1 : s2
-        for column = 1 : s4            
-            block = blocks(:, row, :, column);
+    img_matrix = zeros(rows, columns);
+       
+    for row = 1 : rows
+        for column = 1 : columns            
+            %block = blocks(:, row, :, column);
 
-            feature_vector = create_feature_vector(block);            
+            feature_vector = create_feature_vector(imdata, row, column);            
             predicted = sim(net, feature_vector);
             
-            blocks(:, row, :, column) = reshape(predicted, block_s1, block_s2); 
+            img_matrix(row, column) = predicted; 
         end;
     end;
     
-    img_matrix = uint8(round(reshape(blocks, rows, columns)));
+    img_matrix = uint8(round(img_matrix));
     expected = imread(sprintf('%s/%s', target_images_directory, img.name));
     mseError = mse(expected - img_matrix)
 

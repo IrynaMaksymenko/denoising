@@ -7,13 +7,11 @@ image_count = length(input_images(not([input_images.isdir])));
 rows = 258;
 columns = 540;
 
-block_s1 = 3; %43;
-block_s2 = 3; %45;
 additional_fetures = 5;
-input_size = block_s1*block_s2 + additional_fetures; 
-output_size = block_s1*block_s2; 
+input_size = 1 + additional_fetures; 
+output_size = 1; 
 
-blocks_in_one_image = (rows/block_s1)*(columns/block_s2);
+blocks_in_one_image = (rows)*(columns);
 
 dataset_size = blocks_in_one_image * image_count;
 
@@ -26,15 +24,15 @@ for img = input_images'
     imdata = double(imread(sprintf('%s/%s', train_images_directory, img.name)));
         
     % split image into blocks
-    blocks = reshape(imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
-    [~, s2, ~, s4] = size(blocks);
+    %blocks = reshape(imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
+    %[~, s2, ~, s4] = size(blocks);
     
     index = image_index*blocks_in_one_image+1;
-    for row = 1 : s2
-        for column = 1 : s4            
-            block = blocks(:, row, :, column);
+    for row = 1 : rows
+        for column = 1 : columns            
+            %block = blocks(:, row, :, column);
 
-            feature_vector = create_feature_vector(block);
+            feature_vector = create_feature_vector(imdata, row, column);
             x(:, index) = feature_vector;
             index = index + 1;
         end;
@@ -43,14 +41,14 @@ for img = input_images'
 
     target_imdata = double(imread(sprintf('%s/%s', train_cleaned_images_directory, img.name)));
     
-    target_blocks = reshape(target_imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
+    %target_blocks = reshape(target_imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
     
     index = image_index*blocks_in_one_image+1;
-    for row = 1 : s2
-        for column = 1 : s4            
-            target_block = target_blocks(:, row, :, column);
+    for row = 1 : rows
+        for column = 1 : columns            
+            %target_block = target_blocks(:, row, :, column);
             
-            target_vector = create_target_vector(target_block);
+            target_vector = target_imdata(row, column);
             y(:, index) = target_vector;
             index = index + 1;
         end;
