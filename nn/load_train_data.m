@@ -1,4 +1,4 @@
-function [x, y, block_size] = load_train_data()
+%function [x, y, input_size, output_size] = load_train_data()
 train_images_directory = 'D:\Ira\ML Project\denoising\data\train_258';
 train_cleaned_images_directory = 'D:\Ira\ML Project\denoising\data\train_cleaned_258';
 
@@ -7,16 +7,18 @@ image_count = length(input_images(not([input_images.isdir])));
 rows = 258;
 columns = 540;
 
-block_s1 = 43;
-block_s2 = 45;
-block_size = block_s1*block_s2;
+block_s1 = 3; %43;
+block_s2 = 3; %45;
+additional_fetures = 5;
+input_size = block_s1*block_s2 + additional_fetures; 
+output_size = block_s1*block_s2; 
 
 blocks_in_one_image = (rows/block_s1)*(columns/block_s2);
 
-data_size = blocks_in_one_image * image_count;
+dataset_size = blocks_in_one_image * image_count;
 
-x = zeros(block_size, data_size);
-y = zeros(block_size, data_size);
+x = zeros(input_size, dataset_size);
+y = zeros(output_size, dataset_size);
 
 image_index = 0;
 for img = input_images'
@@ -56,4 +58,4 @@ for img = input_images'
     
     image_index = image_index + 1;
 end
-end
+%end

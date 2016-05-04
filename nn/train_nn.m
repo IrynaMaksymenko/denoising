@@ -1,9 +1,3 @@
-
-%-----------------------------------------------------------------------
-% Loading data
-[x, y, data_size] = load_train_data();
-
-%------------------------------------------------------------------------
 % Creation of NN
 
 net = network;
@@ -13,7 +7,7 @@ net.numInputs = 1;
 
 % each block represents image window of size 43*45
 % inputs size is the number of blocks
-net.inputs{1}.size = data_size;
+net.inputs{1}.size = input_size;
 % normalize inputs
 net.inputs{1}.processFcns = {'mapminmax'};
 
@@ -21,13 +15,13 @@ net.inputs{1}.processFcns = {'mapminmax'};
 net.numLayers = 2;
 
 % on hidden layer there are 50 neurons
-net.layers{1}.size = 100;
+net.layers{1}.size = 5;
 net.layers{1}.transferFcn = 'logsig';
 net.layers{1}.initFcn = 'initnw';
 
 % output layers
 for lay = 2:2
-    net.layers{lay}.size = data_size;
+    net.layers{lay}.size = output_size;
     net.layers{lay}.transferFcn = 'purelin';
     net.layers{lay}.initFcn = 'initnw';
 end;
@@ -63,7 +57,7 @@ net.plotFcns = {'plotperform','plottrainstate','ploterrhist', ...
 
 net = init(net);
 
-net = train(net, xn, yn);
+net = train(net, x, y);
 
 
 
