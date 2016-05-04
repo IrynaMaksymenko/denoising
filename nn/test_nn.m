@@ -29,11 +29,10 @@ for img = input_images'
         for column = 1 : s4            
             block = blocks(:, row, :, column);
 
-            feature_vector = create_feature_vector(block);
+            feature_vector = create_feature_vector(block);            
+            predicted = sim(net, tn);
             
-            predicted = sim(net, feature_vector);
             blocks(:, row, :, column) = reshape(predicted, block_s1, block_s2); 
-
         end;
     end;
   
