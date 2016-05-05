@@ -5,20 +5,14 @@ function feature_vector = create_feature_vector(imdata, r, c)
     feature_vector = zeros(6, 1);
     
     % first, put pixels itself as features
-    index = 1;
-            pixel = imdata(r, c);
-            feature_vector(index) = pixel;
-            index = index+1;
+    pixel = imdata(r, c);
+    feature_vector(1) = pixel;
+
     % add other festures   
     vec = get_neighbours(imdata, r, c);
-    feature_vector(index) = range(vec);
-    index = index + 1;
-    feature_vector(index) = var(vec);
-    index = index + 1;
-    feature_vector(index) = std(vec);
-    index = index + 1;
-    feature_vector(index) = mode(vec);
-    index = index + 1;
-    feature_vector(index) = mean(vec);
-
+    feature_vector(2) = range(vec);
+    feature_vector(3) = var(vec);
+    feature_vector(4) = std(vec);
+    feature_vector(5) = mode(vec);
+    feature_vector(6) = mean(vec);
 end

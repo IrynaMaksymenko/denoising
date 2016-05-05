@@ -1,59 +1,54 @@
+% this script fills input data matrix 'x', target data matrix 'y',
+% defines input_size and output_size
 %function [x, y, input_size, output_size] = load_train_data()
 train_images_directory = 'D:\Ira\ML Project\denoising\data\train_258';
 train_cleaned_images_directory = 'D:\Ira\ML Project\denoising\data\train_cleaned_258';
 
 input_images = dir(sprintf('%s/*.png', train_images_directory));
-image_count = length(input_images(not([input_images.isdir])));
-rows = 258;
-columns = 540;
 
-additional_fetures = 5;
-input_size = 1 + additional_fetures; 
+image_count = length(input_images(not([input_images.isdir])));
+imdata_vector = cell(image_count, 1);
+
+% precalculate dataset size for speed up
+samples_size = 0;
+i = 1;
+for img = input_images'
+    imdata = double(imread(sprintf('%s/%s', train_images_directory, img.name)));
+    [rows, columns] = size(imdata);
+    samples_size = samples_size + rows*columns;
+    imdata_vector{i} = imdata; 
+    i = i + 1;
+end
+
+input_size = 6; 
 output_size = 1; 
 
-blocks_in_one_image = (rows)*(columns);
+x = zeros(input_size, samples_size);
+y = zeros(output_size, samples_size);
 
-dataset_size = blocks_in_one_image * image_count;
+% iterate ovet target images to fill x and y
+target_images = dir(sprintf('%s/*.png', train_cleaned_images_directory));
 
-x = zeros(input_size, dataset_size);
-y = zeros(output_size, dataset_size);
+index = 1; % sample index
+i = 1; % image index
+for img = target_images'
 
-image_index = 0;
-for img = input_images'
-    
-    imdata = double(imread(sprintf('%s/%s', train_images_directory, img.name)));
-        
-    % split image into blocks
-    %blocks = reshape(imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
-    %[~, s2, ~, s4] = size(blocks);
-    
-    index = image_index*blocks_in_one_image+1;
-    for row = 1 : rows
-        for column = 1 : columns            
-            %block = blocks(:, row, :, column);
-
-            feature_vector = create_feature_vector(imdata, row, column);
-            x(:, index) = feature_vector;
-            index = index + 1;
-        end;
-    end;
-    
-
+    imdata = cell2mat(imdata_vector(i));
     target_imdata = double(imread(sprintf('%s/%s', train_cleaned_images_directory, img.name)));
-    
-    %target_blocks = reshape(target_imdata, [block_s1, rows/block_s1, block_s2, columns/block_s2]);
-    
-    index = image_index*blocks_in_one_image+1;
+    [rows, columns] = size(imdata);
+   
     for row = 1 : rows
         for column = 1 : columns            
-            %target_block = target_blocks(:, row, :, column);
+            features = create_feature_vector(imdata, row, column);
+            x(:, index) = features;
             
-            target_vector = target_imdata(row, column);
-            y(:, index) = target_vector;
+            target_value = target_imdata(row, column);
+            y(:, index) = target_value;
+            
             index = index + 1;
         end;
     end;
     
-    image_index = image_index + 1;
+    i = i + 1;
+    
 end
-%end
